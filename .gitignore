@@ -1,0 +1,52 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py
+*.pyc
+*.pyo
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Virtual environments
+venv/
+ENV/
+env/
+.venv/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Docker
+.Dockerfile
+.dockerignore
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Jupyter
+.ipynb_checkpoints
+
+# Data
+data/*.csv
+!data/sample_data.csv
+
+# Models (except for sample)
+models/*.pkl
+!models/sentiment_model_sample.pkl
+
+# Testing
+.tox/
+
+# Documentation
+docs/_build/
+
+# OS files
+.DS_Store
+Thumbs.db

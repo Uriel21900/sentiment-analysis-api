@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+      - "8501:8501"
+    volumes:
+      - ./data:/app/data
+    environment:
+      - MODEL_PATH=/app/models/sentiment_model.pkl
+    command: >
+      sh -c "python api/models/sentiment_model.py &&
+      uvicorn api.main:app --host 0.0.0.0 --port 8000 &&
+      streamlit run dashboards/app.py --server.port 8501"
+
+  dashboard:
+    build: .
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./data:/app/data
+    command: streamlit run dashboards/app.py --server.host 0.0.0.0 --server.port 8501
