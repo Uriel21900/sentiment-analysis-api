@@ -1,26 +1,23 @@
-# 🚀 Real-Time Sentiment Analysis Dashboard
+# 🚀 Sentiment Analysis API
 
-A production-ready sentiment analysis system that processes social media data from multiple APIs, applies machine learning models, and visualizes trends in real-time.
+A production-ready sentiment analysis system built with FastAPI that provides real-time text analysis, sentiment classification, and text processing capabilities.
 
 ## ✨ Features
 
-- 📊 **Multi-Source Data Collection**: Scrape Twitter/X and Reddit APIs for sentiment data
-- 🤖 **ML-Powered Analysis**: Pre-trained BERT-based sentiment classifiers
-- 🎨 **Interactive Dashboards**: Streamlit UI with Matplotlib visualizations
-- 🔌 **REST API**: FastAPI endpoints for sentiment scoring
-- 📈 **Time-Series Analysis**: Track sentiment trends over time
-- 🎯 **Topic Clustering**: Group conversations by topics using LDA
-- 📁 **Production Ready**: Docker support, CI/CD, logging
+- 📊 **Sentiment Analysis**: Classify text as positive/negative with confidence scores
+- 🤖 **ML-Powered**: Uses scikit-learn with TF-IDF and logistic regression
+- 🔌 **REST API**: FastAPI endpoints with Pydantic validation
+- 📈 **Metrics**: Track sentiment trends and model performance
+- 🧹 **Text Processing**: Cleaning, tokenization, summarization
+- 📁 **CI/CD Ready**: Automated testing with GitHub Actions
+- 🐳 **Docker**: Container-ready deployment
 
 ## 🛠️ Tech Stack
 
 - **FastAPI** - REST API framework
 - **Scikit-learn** - Machine learning models
-- **Hugging Face Transformers** - BERT sentiment analysis
-- **Streamlit** - Interactive dashboards
-- **Pandas/NumPy** - Data manipulation
+- **NumPy/Pandas** - Data manipulation
 - **Matplotlib/Plotly** - Data visualization
-- **Redis** - Caching and real-time processing
 
 ## 📁 Project Structure
 
@@ -33,20 +30,10 @@ sentiment-analysis/
 │   │   └── metrics.py
 │   ├── models/
 │   │   └── sentiment_model.py
-│   ├── utils/
-│   │   ├── api_clients.py
-│   │   └── validators.py
 │   └── main.py
-├── dashboards/
-│   └── app.py
-├── data/
-│   └── sample_data.csv
-├── notebooks/
-│   ├── EDA.ipynb
-│   └── model_training.ipynb
 ├── tests/
 │   ├── test_api.py
-│   └── test_sentiment.py
+│   └── test_simple.py
 ├── requirements.txt
 ├── Dockerfile
 └── .dockerignore
@@ -221,8 +208,20 @@ Your Name
 - GitHub: [@Uriel21900](https://github.com/Uriel21900)
 - Email: Joseurodriguez@gmail.com
 
-## 🙏 Acknowledgments
+## 👤 Author
 
-- Hugging Face for transformers
-- Twitter API for data
-- Streamlit for dashboarding
+Uriel21900
+- GitHub: [@Uriel21900](https://github.com/Uriel21900)
+- Email: uriel21900@example.com
+
+## 🔧 GitHub Actions Compatibility
+
+This repository uses:
+- `actions/checkout@v4` - Latest version with Node.js 24 support
+- `actions/setup-python@v5` - Latest Python setup with Node.js 24 support
+
+These versions ensure compatibility with GitHub's upcoming Node.js 24 default.
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
