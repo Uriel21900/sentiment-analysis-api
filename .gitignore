@@ -50,3 +50,8 @@ docs/_build/
 # OS files
 .DS_Store
 Thumbs.db
+
+# GitHub Actions build artifacts
+.github/*/*
+node_modules/
+.npm/
