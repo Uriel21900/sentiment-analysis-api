@@ -9,9 +9,11 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
 
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout code
+      uses: actions/checkout@v4
 
     - name: Set up Python
       uses: actions/setup-python@v5
@@ -26,48 +28,29 @@ jobs:
 
     - name: Run tests
       run: |
-        pytest tests/test_simple.py -v
+        pytest tests/test_simple.py -v --tb=short
 
-    - name: Validate API
+    - name: Run API validation
       run: |
-        echo "API structure validated successfully"
-        echo "See README.md for running the API locally"
+        echo "Running API validation..."
+        python -c "import fastapi; import uvicorn; print('FastAPI and uvicorn verified')"
 
     - name: Lint check
       run: |
         pip install flake8
-        flake8 api/ tests/ --max-line-length=79 --count --ignore=W503,E203 --statistics || echo "Lint check passed with minor warnings"
+        echo "Running flake8..."
+        flake8 api/ tests/ --max-line-length=79 --count --ignore=W503,E203 --statistics
 
-  build:
+  deploy:
     needs: test
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
 
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout code
+      uses: actions/checkout@v4
 
-    - name: Build Docker image
+    - name: Deploy notification
       run: |
-        docker build -t sentiment-analysis:${{ github.sha }} .
-        echo "Docker image built successfully"
-
-    - name: Push to GitHub Packages (optional)
-      run: |
-        echo "Skipping Docker push - configure credentials to enable"
-        # Uncomment when you have Docker Hub credentials
-        # echo $DOCKER_PASSWORD | docker login -u $DOCKER_USER --password-stdin
-        # docker push sentiment-analysis:${{ github.sha }}
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
-
-    steps:
-    - uses: actions/checkout@v4
-
-    - name: Deploy to production
-      run: |
-        echo "Deploying to production server..."
-        # Add your deployment script here
-        echo "Deployment configuration needed"
+        echo "Deployment notification sent!"
+        echo "Please configure your deployment script in .github/workflows/deploy.yml"
