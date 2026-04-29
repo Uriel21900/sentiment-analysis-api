@@ -2,11 +2,8 @@
 Sentiment analysis API endpoints.
 """
 from fastapi import APIRouter, HTTPException
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 import numpy as np
-
-# BaseModel is already imported from pydantic
-
 
 from api.models import sentiment_model
 
@@ -21,23 +18,21 @@ class SentimentRequest(BaseModel):
 
 class SentimentResponse(BaseModel):
     """Response model for sentiment analysis."""
+    model_config = ConfigDict(json_schema_extra={
+        "example": {
+            "sentiment": "positive",
+            "confidence": 0.9823,
+            "scores": {"positive": 0.9823, "negative": 0.0177}
+        }
+    })
     sentiment: str
     confidence: float
     scores: dict
 
-    class Config:
-        json_schema_extra = {
-            "example": {
-                "sentiment": "positive",
-                "confidence": 0.9823,
-                "scores": {"positive": 0.9823, "negative": 0.0177}
-            }
-        }
-
 
 class BatchSentimentRequest(BaseModel):
     """Request model for batch sentiment analysis."""
-    texts: list[str] = Field(..., min_items=1, max_items=100)
+    texts: list[str] = Field(..., min_length=1, max_length=100, description="List of texts to analyze")
 
 
 class BatchSentimentResponse(BaseModel):
