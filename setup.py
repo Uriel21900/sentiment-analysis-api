@@ -12,8 +12,8 @@ with open("requirements.txt", "r", encoding="utf-8") as fh:
 setup(
     name="sentiment-analysis",
     version="1.0.0",
-    author="Your Name",
-    author_email="your.email@example.com",
+    author="Uriel21900",
+    author_email="Joseurodriguez@gmail.com",
     description="Real-time sentiment analysis dashboard with FastAPI and Streamlit",
     long_description=long_description,
     long_description_content_type="text/markdown",
