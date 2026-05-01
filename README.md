@@ -22,7 +22,8 @@ A production-ready sentiment analysis system built with FastAPI that provides re
 ## 📁 Project Structure
 
 ```
-sentiment-analysis/
+cd sentiment-analysis-api
+.
 ├── api/
 │   ├── endpoints/
 │   │   ├── sentiment.py
@@ -36,7 +37,7 @@ sentiment-analysis/
 │   └── test_simple.py
 ├── requirements.txt
 ├── Dockerfile
-└── .dockerignore
+└── .python-version
 ```
 
 ## 🚀 Quick Start
@@ -48,9 +49,13 @@ sentiment-analysis/
 git clone https://github.com/Uriel21900/sentiment-analysis-api.git
 cd sentiment-analysis-api
 
-# Create virtual environment
+# Create and activate virtual environment
 python -m venv venv
-source venv/bin/activate  # or venv\Scripts\activate on Windows
+
+# MacOS/Linux:
+source venv/bin/activate
+# Windows:
+.\venv\Scripts\Activate.ps1
 
 # Install dependencies
 pip install -r requirements.txt
@@ -59,8 +64,8 @@ pip install -r requirements.txt
 ### Run the API
 
 ```bash
-# Start the FastAPI server
-uvicorn api.main:app --host 0.0.0.0 --port 8000 --reload
+# Start the FastAPI server locally
+uvicorn api.main:app --host 127.0.0.1 --port 8000 --reload
 
 # API documentation will be available at:
 # - http://localhost:8000/docs
@@ -76,23 +81,27 @@ Analyze sentiment of text
 ```bash
 curl -X POST "http://localhost:8000/api/sentiment/analyze" \
   -H "Content-Type: application/json" \
-  -d '{"text": "I love this product! It changed my life!"}'
+  -d '{"text": "The new update is absolutely fantastic and works perfectly!"}'
 ```
 
 **Response:**
 ```json
 {
   "sentiment": "positive",
-  "confidence": 0.98,
-  "scores": {
-    "positive": 0.98,
-    "negative": 0.02
-  }
+  "confidence": 0.984,
+  "processed_text": "new update absolutely fantastic works perfectly"
 }
 ```
 
 ### GET /api/metrics/overview
-
+{
+  "total_analyses": 1250,
+  "average_confidence": 0.89,
+  "sentiment_distribution": {
+    "positive": 850,
+    "negative": 400
+  }
+}
 Get overall sentiment metrics
 
 ```bash
@@ -110,7 +119,7 @@ curl "http://localhost:8000/api/metrics/trend?days=7"
 ## 🧪 Running Tests
 
 ```bash
-pytest tests/test_simple.py -v
+pytest
 ```
 
 ## 🐳 Docker Deployment
