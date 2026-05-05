@@ -1,9 +1,7 @@
 """
 Sentiment analysis model using scikit-learn and text preprocessing.
 """
-import os
 import re
-import pickle
 import numpy as np
 from typing import Tuple, Dict, Any
 from datetime import datetime
@@ -12,12 +10,10 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.linear_model import LogisticRegression
 from sklearn.pipeline import Pipeline
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 from collections import deque
 
 # Try to import more advanced models
 try:
-    from transformers import pipeline
     HAS_TRANSFORMERS = True
 except ImportError:
     HAS_TRANSFORMERS = False
@@ -34,7 +30,8 @@ class SentimentModel:
         Initialize the sentiment model.
 
         Args:
-            model_type: Type of model to use ('naive_bayes', 'logistic_regression', or 'ensemble')
+            model_type: Type of model to use ('naive_bayes',
+                        'logistic_regression', or 'ensemble')
         """
         self.model_type = model_type
         self.model = self._create_model(model_type)
@@ -193,10 +190,11 @@ class SentimentModel:
         variations = []
 
         # Add random words
-        adjectives = ["really", "very", "absolutely", "truly", "quite", "fairly",
-                      "highly", "extremely", "incredibly", "surprisingly"]
+        adjectives = ["really", "very", "absolutely", "truly",
+                      "quite", "fairly", "highly", "extremely",
+                      "incredibly", "surprisingly"]
         nouns = ["it", "this", "the product", "the service", "the experience",
-                  "your help", "the team", "the app", "your product"]
+                 "your help", "the team", "the app", "your product"]
 
         for _ in range(n):
             adj = np.random.choice(adjectives)
@@ -260,12 +258,15 @@ class SentimentModel:
 
         total = len(self._sentiment_cache)
         self.stats["total"] = total
-        self.stats["positive"] = sum(1 for _, p in self._sentiment_cache if p[0] == 1)
-        self.stats["negative"] = sum(1 for _, p in self._sentiment_cache if p[0] == 0)
+        self.stats["positive"] = sum(
+            1 for _, p in self._sentiment_cache if p[0] == 1)
+        self.stats["negative"] = sum(
+            1 for _, p in self._sentiment_cache if p[0] == 0)
 
         # Calculate average confidence
         all_confidences = [max(p[1]) for _, p in self._sentiment_cache]
-        self.stats["avg_score"] = sum(all_confidences) / len(all_confidences) if all_confidences else 0.5
+        self.stats["avg_score"] = sum(
+            all_confidences) / len(all_confidences) if all_confidences else 0.5
 
         # Most common sentiment
         most_common = "neutral"
@@ -332,6 +333,7 @@ class SentimentModel:
 
     def load_model(self, filepath: str):
         """Load model from file."""
+        import joblib
         self.model = joblib.load(filepath)
         self.is_trained = True
         print(f"Model loaded from {filepath}")
@@ -345,6 +347,7 @@ class SentimentModel:
 # Create singleton instance
 _sentiment_model_instance = None
 
+
 def get_model(model_type: str = "ensemble") -> SentimentModel:
     """Get the singleton model instance."""
     global _sentiment_model_instance
@@ -353,6 +356,7 @@ def get_model(model_type: str = "ensemble") -> SentimentModel:
         _sentiment_model_instance.initialize_model(train=True)
     return _sentiment_model_instance
 
+
 def initialize_model(model_type: str = "ensemble", train: bool = True):
     """Initialize the model."""
     global _sentiment_model_instance
@@ -360,15 +364,23 @@ def initialize_model(model_type: str = "ensemble", train: bool = True):
         _sentiment_model_instance = SentimentModel(model_type=model_type)
     _sentiment_model_instance.initialize_model(train=train)
 
+
 def predict(text: str) -> Tuple[int, np.ndarray]:
     """Predict sentiment for text."""
     model = get_model()
     return model.predict(text)
+
 
 def get_statistics() -> Dict[str, Any]:
     """Get model statistics."""
     model = get_model()
     return model.get_statistics()
 
+
 # Export
-__all__ = ["SentimentModel", "get_model", "initialize_model", "predict", "get_statistics"]
+__all__ = [
+    "SentimentModel",
+    "get_model",
+    "initialize_model",
+    "predict",
+    "get_statistics"]

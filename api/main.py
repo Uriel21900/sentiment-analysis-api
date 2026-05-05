@@ -1,13 +1,15 @@
 """
 FastAPI application for sentiment analysis API.
 """
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 
 from api.endpoints import sentiment, text, metrics
 
 # Create FastAPI app
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Initialize and cleanup app resources."""
@@ -33,6 +35,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 @app.get("/")
 async def root():
     """Root endpoint with API info."""
@@ -49,7 +52,10 @@ async def root():
     }
 
 # Include API routers
-app.include_router(sentiment.router, prefix="/api/sentiment", tags=["Sentiment"])
+app.include_router(
+    sentiment.router,
+    prefix="/api/sentiment",
+    tags=["Sentiment"])
 app.include_router(text.router, prefix="/api/text", tags=["Text"])
 app.include_router(metrics.router, prefix="/api/metrics", tags=["Metrics"])
 

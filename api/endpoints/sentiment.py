@@ -32,7 +32,10 @@ class SentimentResponse(BaseModel):
 
 class BatchSentimentRequest(BaseModel):
     """Request model for batch sentiment analysis."""
-    texts: list[str] = Field(..., min_length=1, max_length=100, description="List of texts to analyze")
+    texts: list[str] = Field(...,
+                             min_length=1,
+                             max_length=100,
+                             description="List of texts to analyze")
 
 
 class BatchSentimentResponse(BaseModel):
@@ -47,7 +50,7 @@ async def analyze_sentiment(request: SentimentRequest):
     Analyze sentiment of a single text.
 
     Analyzes the sentiment of the provided text using a pre-trained
-    machine learning model and returns the sentiment label and confidence score.
+    machine learning model and returns the label and confidence score.
 
     **Parameters:**
         - text (str): The text to analyze (1-10000 characters)
@@ -104,7 +107,8 @@ async def batch_analyze(request: BatchSentimentRequest):
         List of sentiment analysis results for each text
     """
     if not request.texts:
-        raise HTTPException(status_code=400, detail="At least one text is required")
+        raise HTTPException(status_code=400,
+                            detail="At least one text is required")
 
     results = []
     for text in request.texts:

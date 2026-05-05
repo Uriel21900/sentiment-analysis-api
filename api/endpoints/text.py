@@ -9,8 +9,6 @@ from collections import Counter
 # BaseModel and Field already imported from pydantic
 
 
-from api.models import sentiment_model
-
 router = APIRouter()
 
 
@@ -68,7 +66,11 @@ async def clean_text(request: TextCleanRequest):
     original_length = len(request.text)
 
     # Remove URLs
-    text = re.sub(r'http\S+|www\S+|https\S+', '', request.text, flags=re.MULTILINE)
+    text = re.sub(
+        r'http\S+|www\S+|https\S+',
+        '',
+        request.text,
+        flags=re.MULTILINE)
 
     # Remove mentions and hashtags (optional - can keep for sentiment)
     text = re.sub(r'@\w+|#\w+', '', text)
@@ -126,7 +128,8 @@ async def summarize_text(request: SummarizeRequest):
         Summary and compression ratio
     """
     if len(request.text) < 10:
-        raise HTTPException(status_code=400, detail="Text too short for summarization")
+        raise HTTPException(status_code=400,
+                            detail="Text too short for summarization")
 
     original_length = len(request.text)
 
@@ -140,7 +143,8 @@ async def summarize_text(request: SummarizeRequest):
 
     # Get top 20% of important words
     if total_words > 0:
-        top_words = [word for word, _ in words.most_common(int(total_words * 0.2))]
+        top_words = [word for word,
+                     _ in words.most_common(int(total_words * 0.2))]
     else:
         top_words = []
 
@@ -150,5 +154,7 @@ async def summarize_text(request: SummarizeRequest):
     return SummarizeResponse(
         original_length=original_length,
         summary=summary,
-        compression_ratio=len(summary) / original_length if original_length > 0 else 0
+        compression_ratio=(
+            len(summary) / original_length
+        ) if original_length > 0 else 0
     )

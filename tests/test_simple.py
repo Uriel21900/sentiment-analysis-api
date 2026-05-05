@@ -2,7 +2,6 @@
 Simple tests for the Sentiment Analysis API.
 """
 import pytest
-import httpx
 from fastapi.testclient import TestClient
 from api.main import app
 

@@ -3,8 +3,6 @@ Metrics endpoints for overall sentiment analysis statistics.
 """
 from fastapi import APIRouter, Query
 from datetime import datetime, timedelta
-from collections import defaultdict
-import json
 from pydantic import BaseModel
 
 from api.models import sentiment_model
@@ -87,14 +85,14 @@ async def get_trend(days: int = Query(default=7, ge=1, le=30)):
             day_stats = stats["data"][i]
         else:
             # Generate synthetic data if not available
-            day_stats = sentiment_model.generate_trend_data(start_time + timedelta(days=i))
+            day_stats = sentiment_model.generate_trend_data(
+                start_time + timedelta(days=i))
 
         days_data.append(day_stats.get("date", day_key))
         positive_counts.append(day_stats.get("positive", 0))
         negative_counts.append(day_stats.get("negative", 0))
 
         # Calculate positive ratio
-        total = day_stats.get("positive", 0) + day_stats.get("negative", 0)
         positive_ratios.append(day_stats.get("positive_ratio", 0))
 
     return TrendResponse(
